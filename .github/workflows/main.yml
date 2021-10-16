@@ -1,37 +1,25 @@
-name: CI
-on: push
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - master
+
 jobs:
-  deploy:
-    runs-on: ubuntu-18.04
+  build:
+
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Git checkout
-        uses: actions/checkout@v2
+    - name: Checkout master
+      uses: actions/checkout@v1
+      with:
+        submodules: true
 
-      - name: Update theme
-        # (Optional)If you have the theme added as submodule, you can pull it and use the most updated version
-        run: git submodule update --init --recursive
-
-      - name: Setup hugo
-        uses: peaceiris/actions-hugo@v2
-        with:
-          hugo-version: "0.64.0"
-
-      - name: Build
-        # remove --minify tag if you do not need it
-        # docs: https://gohugo.io/hugo-pipes/minification/
-        run: |
-          hugo mod clean 
-          hugo mod get -u ./...
-          hugo --minify
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          personal_token: ${{ secrets.TOKEN }}
-          external_repository: aviral-ag/aviral-ag.github.io
-          publish_dir: ./public
-          #   keep_files: true
-          user_name: aviral-ag
-          user_email: agarwalaviral1999@gmail.com
-          publish_branch: master
-        #   cname: example.com
+    - name: Hugo Deploy GitHub Pages
+      uses: benmatselby/hugo-deploy-gh-pages@master
+      env:
+        HUGO_VERSION: 0.68.3
+        TARGET_REPO: aviral-ag/aviral-ag.github.io 
+        TOKEN: ${{ secrets.TOKEN }}
+        #CNAME: www.jameswright.xyz 
