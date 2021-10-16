@@ -1,0 +1,4 @@
+# Personal Website
+My Personal Website
+
+Based on [Hugo Academic Theme](https://github.com/wowchemy/starter-hugo-academic)
