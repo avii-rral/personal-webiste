@@ -21,6 +21,7 @@ jobs:
         # docs: https://gohugo.io/hugo-pipes/minification/
         run: |
           hugo mod clean 
+          hugo mod get -u ./...
           hugo --minify
 
       - name: Deploy
